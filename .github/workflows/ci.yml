@@ -1,21 +1,27 @@
-name: CI Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run basic check
-        run: |
-          echo "Build started"
-          ls
-          echo "Build completed"
+      - name: Run CI step
+        run: echo "CI running successfully"
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: CD step
+        run: echo "Deploying (simulated) 🚀"
